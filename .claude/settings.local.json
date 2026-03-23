@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); print\\(''''Total:'''', len\\(data\\)\\); print\\(''''Keys:'''', list\\(data[0].keys\\(\\)\\)\\)\")",
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir -p \"C:/Users/lucio/Desktop/apify-lead-pipeline/frontend/lib\")",
+      "Bash(mkdir -p \"C:/Users/lucio/Desktop/apify-lead-pipeline/frontend/components/ui\")",
+      "Bash(mkdir -p \"C:/Users/lucio/Desktop/apify-lead-pipeline/frontend/app/api/leads\")",
+      "Bash(npx tsc:*)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s http://localhost:3000/api/leads)",
+      "Bash(python3:*)"
+    ]
+  }
+}
