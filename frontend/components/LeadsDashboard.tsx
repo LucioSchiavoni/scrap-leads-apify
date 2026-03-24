@@ -218,13 +218,32 @@ export default function LeadsDashboard() {
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 
-  // ── Load from localStorage on mount ──
+  // ── Load from localStorage on mount, or auto-fetch bundled leads.json ──
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) setLeads(JSON.parse(raw));
-    } catch {}
-    setLoading(false);
+    async function init() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) {
+          setLeads(JSON.parse(raw));
+        } else {
+          const res = await fetch("/leads.json");
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              const normalized = data.map((item: Record<string, unknown>) => ({
+                ...item,
+                _id: (item._id ?? item.placeId ?? item.cid ?? item.title) as string,
+                estado: (item.estado ?? "Nuevo") as LeadStatus,
+              })) as Lead[];
+              setLeads(normalized);
+              localStorage.setItem(LS_KEY, JSON.stringify(normalized));
+            }
+          }
+        }
+      } catch {}
+      setLoading(false);
+    }
+    init();
   }, []);
 
   // ── Persist to localStorage whenever leads change ──
